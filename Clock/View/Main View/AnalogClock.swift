@@ -11,9 +11,9 @@ struct AnalogClock: View {
     var body: some View {
         TimelineView(.animation) { timeline in
             let date = timeline.date
-            
             ClockView(date: date)
         }
+        .padding()
     }
 }
 

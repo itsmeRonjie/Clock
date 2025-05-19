@@ -9,13 +9,15 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        VStack(spacing: 40) {
+            Text("SwiftUI Canvas and TimelineView")
+                .font(.title2)
+                .bold()
+            Spacer()
+            DigitalClock()
+            AnalogClock()
+            Spacer()
         }
-        .padding()
     }
 }
 
