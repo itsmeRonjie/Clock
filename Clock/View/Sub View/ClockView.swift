@@ -11,7 +11,7 @@ struct ClockView: View {
     let date: Date
     let centerPointRadius: CGFloat = 3.0
     let circleInset = 10.0
-
+    
     var body: some View {
         Canvas {
             context,
@@ -30,6 +30,18 @@ struct ClockView: View {
             let secondsAngle = angle(for: seconds, unit: 60)
             let minutesAngle = angle(for: minutes, unit: 60 )
             let hoursAngle = angle(for: hours * 5 + minutes / 12, unit: 60)
+            let radius = min(size.width, size.height) / 2 - circleInset
+            
+            let circleRect = CGRect(
+                x: center.x - radius,
+                y: center.y - radius,
+                width: 2 * radius,
+                height: 2 * radius
+            )
+            
+            let circlePath = Path(ellipseIn: circleRect)
+            context
+                .stroke(circlePath, with: .color(.gray), lineWidth: 3)
             
             func hand(at angle: Angle, length: CGFloat, color: Color) {
                 var path = Path()
@@ -50,7 +62,6 @@ struct ClockView: View {
             hand(at: minutesAngle, length: size.width * 0.35, color: .primary)
             hand(at: secondsAngle, length: size.width * 0.4, color: .red)
             
-            let radius = min(size.width, size.height) / 2 - circleInset
             for hour in 1...12 {
                 let angle = Angle.degrees(Double(hour) / 12 * 360 - 90)
                 let text = Text("\(hour)")
@@ -115,10 +126,10 @@ struct ClockView: View {
                 
                 path
                     .move(to: outer)
-
+                
                 path
                     .addLine(to: inner)
-
+                
                 context
                     .stroke(path, with: .color(.gray ), lineWidth: lineWidth)
             }
