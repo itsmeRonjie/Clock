@@ -10,7 +10,7 @@ import SwiftUI
 struct ClockView: View {
     let date: Date
     let circleRadius: CGFloat = 3.0
-
+    
     var body: some View {
         Canvas {
             context,
@@ -48,7 +48,31 @@ struct ClockView: View {
             hand(at: hoursAngle, length: size.width * 0.25, color: .primary)
             hand(at: minutesAngle, length: size.width * 0.35, color: .primary)
             hand(at: secondsAngle, length: size.width * 0.4, color: .red)
-
+            
+            let radius = min(size.width, size.height) / 2
+            for hour in 1...12 {
+                let angle = Angle.degrees(Double(hour) / 12 * 360 - 90)
+                let text = Text("\(hour)")
+                    .font(.system(size: 12).bold())
+                let textSize = context
+                    .resolve(text)
+                    .measure(in: CGSize(width: 100, height: 100))
+                let textRadius = radius * 0.8
+                
+                let textX = center.x + cos(Double(angle.radians)) * textRadius - textSize.width / 2
+                
+                let textY = center.y + sin(Double(angle.radians)) * textRadius - textSize.height / 2
+                
+                context
+                    .draw(
+                        text,
+                        at: CGPoint(
+                            x: textX + textSize.width / 2,
+                            y: textY + textSize.height / 2
+                        )
+                    )
+            }
+            
             let centerCircle = Path(
                 ellipseIn: CGRect(
                     x: center.x - circleRadius,
